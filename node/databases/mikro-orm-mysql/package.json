@@ -1,19 +1,30 @@
 {
-  "name": "ts-starter",
+  "name": "mikro-orm-mysql",
   "version": "1.0.0",
-  "description": "ts starter demo",
+  "description": "-",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
-  "repository": "https://github.com/YOUR_GITHUB_USER_NAME/ts-starter",
+  "repository": "https://github.com/YOUR_GITHUB_USER_NAME/mikro-orm-mysql",
   "license": "MIT",
   "keywords": [],
+  "type": "module",
   "scripts": {
-    "start": "node dist/main/index.js",
-    "setup": "npx typescript-starter",
+    "start": "node ./build/main/index.js",
+    "setup-mikro-orm": "npm i -s @mikro-orm/core @mikro-orm/mysql",
     "build": "run-p build:*",
     "build:main": "tsc -p tsconfig.json",
     "build:module": "tsc -p tsconfig.module.json",
+    "db:create": "npx mikro-orm migration:up",
+    "db:destroy": "npx mikro-orm migration:down --to 0",
+    "db:seed": "",
+    "db:migration:initial": "npx mikro-orm migration:create --initial",
+    "db:migration:create": "npx mikro-orm migration:create",
+    "db:migration:up": "npx mikro-orm migration:up",
+    "db:migration:down": "npx mikro-orm migration:down",
+    "db:migration:list": "npx mikro-orm migration:list",
+    "db:export": "./scripts/export.sh",
+    "db:import": "./scripts/import.sh",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:lint": "eslint src --ext .ts --fix",
@@ -44,11 +55,19 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@bitauth/libauth": "^1.17.1"
+    "@bitauth/libauth": "^1.17.1",
+    "@mikro-orm/cli": "^5.2.1",
+    "@mikro-orm/core": "^5.2.1",
+    "@mikro-orm/migrations": "^5.2.1",
+    "@mikro-orm/mysql": "^5.2.1",
+    "@mikro-orm/seeder": "^5.2.1",
+    "typescript": "^4.7.3",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@ava/typescript": "^1.1.1",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "ava": "^3.12.1",
@@ -67,8 +86,7 @@
     "prettier": "^2.1.1",
     "standard-version": "^9.0.0",
     "ts-node": "^9.0.0",
-    "typedoc": "^0.19.0",
-    "typescript": "^4.0.2"
+    "typedoc": "^0.19.0"
   },
   "files": [
     "build/main",
@@ -79,6 +97,13 @@
     "LICENSE",
     "README.md"
   ],
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "src/mikro-orm.config.ts",
+      "build/mikro-orm.config.js"
+    ]
+  },
   "ava": {
     "failFast": true,
     "timeout": "60s",

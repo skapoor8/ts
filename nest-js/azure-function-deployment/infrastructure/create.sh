@@ -71,12 +71,33 @@ printf "${BLUE}Creating function app... ${NC}\n"
   printf "${RED}Failed${NC}\n\n"
 }
 
+# todo: could be worth checking is user has ssh-added their identities
+
 printf "${BLUE}Creating deployment pipeline with github actions... ${NC}\n"
 {
 	printf "${BLUE}Checking branch main-azure-function-deployment exists... ${NC}\n"
+	# bash: check if cmd outputs string. this is not working...
+	if [[ $(git ls-remote --heads git@github.com:skapoor8/ts.git  main-azure-function-deployment) ]]
+	then
+		printf "${GREEN}Branch exists${NC}\n"
+	else 
+		printf "${Blue}Branch does not exist. Creating..."
+		{
+			git checkout -b main-azure-function-deployment \
+			&& git push origin main-azure-function-deployment \
+			&& git checkout main
+		} || {
+			git checkout main
+			printf "${RED}Error creating branch${NC}\n"
+			false
+		}
+	fi
+
+	printf "${BLUE}Creating github action. You may be prompted for your passphrase...${NC}\n"
 	az functionapp deployment github-actions add --repo "https://github.com/skapoor8/ts" \
 	-g rg-test-1 -n func-skapoor-test1-api --login-with-github \
 	--build-path ./nest-js/azure-function-deployment -b main-azure-function-deployment
+	printf "${GREEN}Success${NC}\n\n"
 } || {
 	printf "${RED}Failed${NC}\n\n"
 }

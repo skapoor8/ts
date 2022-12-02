@@ -16,6 +16,14 @@ else
 fi
 
 printf "${BLUE}Destroying deployment pipeline with github actions... ${NC}\n"
+{
+  az functionapp deployment github-actions remove --repo "https://github.com/skapoor8/ts" \
+	-g rg-test-1 -n func-skapoor-test1-api --login-with-github \
+	-b main-azure-function-deployment
+} || {
+  printf "${RED}Failed${NC}\n\n"
+  exit 1
+}
 
 printf "${BLUE}Destroying resource group rg-test... ${NC}\n"
 {

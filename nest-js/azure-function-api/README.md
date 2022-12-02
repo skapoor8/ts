@@ -39,7 +39,7 @@ $ npm run test:cov
 ## Recipe
 1. Build a basic nest.js api
 2. Make sure you're using the correct node version
-2. Install azure functions core tools
+3. Install azure functions core tools
 
 ```bash
 brew tap azure/functions
@@ -47,6 +47,14 @@ brew install azure-functions-core-tools@4
 # if upgrading on a machine that has 2.x or 3.x installed:
 brew link --overwrite azure-functions-core-tools@4
 ```
+
+4. Add nest function package
+  - pitfall 1: issues with azure router -> don't use it
+  - pitfall 2: issues with finding function script -> might have to rename the function, and set webPack config off in nest-cli.json file
+
+5. Chang base route
+  - in main.azure.ts
+  - and add extensions.http.routePrefix setting in host.json
 
 ## References
 1. [Azure functions js tutorial](https://learn.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-node)

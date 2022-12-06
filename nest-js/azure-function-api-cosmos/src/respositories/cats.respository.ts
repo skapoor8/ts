@@ -3,6 +3,7 @@ import { CatModel } from '@app/models';
 import { Container, PatchRequestBody } from '@azure/cosmos';
 import { CosmosPartitionKey, InjectModel } from '@nestjs/azure-database';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { v4 as uuid4 } from 'uuid';
 
 export class NullArgumentError extends Error {
@@ -31,6 +32,7 @@ export class CatsRepository {
   constructor(
     @InjectModel(CatModel)
     private readonly _catContainer: Container,
+    private _configService: ConfigService,
   ) {}
 
   async index() {

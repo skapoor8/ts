@@ -8,7 +8,7 @@ import { CatsRepository } from './cats.respository';
   imports: [
     AzureCosmosDbModule.forFeature([{ dto: CatModel, collection: 'Cat' }]),
   ],
-  providers: [CatsRepository],
+  providers: [CatsRepository, ConfigService],
   exports: [CatsRepository],
 })
 export class RepositoriesModule {}

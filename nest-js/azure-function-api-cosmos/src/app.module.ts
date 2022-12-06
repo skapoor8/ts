@@ -10,13 +10,18 @@ import { ControllersModule } from './controllers/controllers.module';
   imports: [
     ConfigModule.forRoot({
       envFilePath: [
-        `${__dirname}/../src/environments/.development.env`,
-        `${__dirname}/../src/environments/.local.env`,
+        `${__dirname}/../../src/environments/.development.env`,
+        `${__dirname}/../../src/environments/.local.env`,
       ],
       isGlobal: true, // make it available everywhere without need for import
     }),
     AzureCosmosDbModule.forRootAsync({
       useFactory: async (configService: ConfigService) => {
+        // console.log(
+        //   __dirname,
+        //   'endpoint:',
+        //   configService.get('AZURE_COSMOS_DB_ENDPOINT'),
+        // );
         return {
           dbName: configService.get('AZURE_COSMOS_DB_NAME'),
           endpoint: configService.get('AZURE_COSMOS_DB_ENDPOINT'),

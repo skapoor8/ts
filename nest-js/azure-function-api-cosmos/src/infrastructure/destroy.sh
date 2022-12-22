@@ -1,6 +1,16 @@
 #!/bin/bash
 
-# color codes
+# resource names ---------------------------------------------------------------
+RG_NAME='rg-cats'
+COSMOS_NAME='cosmos-skapoor-cats'
+STORAGE_NAME='stoskapoorcats'
+FUNC_NAME='func-cats-api'
+RESOURCE_LOCATION='eastus'
+RELEASE_BRANCH='main-cats'
+REPO_URL="https://github.com/skapoor8/ts"
+BUILD_PATH="./nest-js/azure-function-api-cosmos"
+
+# color codes ------------------------------------------------------------------
 BLUE='\033[0;34m'
 GREEN='\033[0;32m'
 RED='\033[0;31m'
@@ -14,22 +24,22 @@ else
     exit 1
 fi
 
-# printf "${BLUE}Destroying deployment pipeline with github actions... ${NC}\n"
-# {
-#     az functionapp deployment github-actions remove --repo "https://github.com/skapoor8/ts" \
-#         -g rg-cats -n func-cats-api --login-with-github \
-#         -b main-cats
-# } || {
-#     printf "${RED}Failed${NC}\n\n"
-#     exit 1
-# }
-
-printf "${BLUE}Destroying resource group rg-cats... ${NC}\n"
+printf "${BLUE}Destroying deployment pipeline with github actions... ${NC}\n"
 {
-    az group delete --name rg-cats -y
-    printf "${GREEN}Success${NC}\n\n"
+    az functionapp deployment github-actions remove --repo "https://github.com/skapoor8/ts" \
+        -g $RG_NAME -n $FUNC_NAME --login-with-github \
+        -b $RELEASE_BRANCH
 } || {
     printf "${RED}Failed${NC}\n\n"
+    exit 1
 }
+
+# printf "${BLUE}Destroying resource group rg-cats... ${NC}\n"
+# {
+#     az group delete --name rg-cats -y
+#     printf "${GREEN}Success${NC}\n\n"
+# } || {
+#     printf "${RED}Failed${NC}\n\n"
+# }
 
 printf "${GREEN}Infrastructure teardown complete${NC}\n"

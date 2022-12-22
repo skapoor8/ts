@@ -8,7 +8,7 @@ FUNC_NAME='func-cats-api'
 RESOURCE_LOCATION='eastus'
 RELEASE_BRANCH='main-cats'
 REPO_URL="https://github.com/skapoor8/ts"
-BUILD_PATH="./nest-js/azure-function-deployment"
+BUILD_PATH="./nest-js/azure-function-api-cosmos"
 
 # todo: could be worth checking is user has ssh-added their identities
 

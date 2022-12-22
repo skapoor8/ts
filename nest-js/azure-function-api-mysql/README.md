@@ -24,4 +24,22 @@ questions
 6. seeding data with cli
 7. db dumps, imports and exports
 
+lessons
+
+1. setter for hidden props fucks things up
+2. best way to serialize entities is manual. based on sub-entity initialization, you can control whether the prop serialized is named 'entity' or 'entityId'
+3. debug: true in mikro config allows you to see queries being fired off
+4. populateWhen: INFER in config ensures things aren't populated by default, avoid expensive joins
+
+questions
+
+1. Ref - doesn't seemt to work in toJSON
+2. ts-morpth vs reflect-metadata for mikro - what are the differences
+3. is the added complexity worth it...?
+4. performance with mikro
+
+pitfalls
+
+1. typing for toObject is messed up
+
 ## Nest.js Things

@@ -23,7 +23,7 @@ export class UserService {
   }
 
   public async createOne(aUser: Omit<IUser, 'id'>) {
-    const entity = new UserEntity(aUser);
+    const entity = this.er.create(new UserEntity(aUser));
     await this.er.persistAndFlush(entity);
   }
 

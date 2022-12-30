@@ -3,17 +3,20 @@ import {
   ManyToOne,
   PrimaryKey,
   Property,
+  ref,
+  Ref,
   Unique,
 } from '@mikro-orm/core';
 import { ISubscription } from '@azure-function-api-mysql/interfaces';
 import { ElistEntity } from './elist.entity';
 import { UuidType } from '../custom-types';
+import { v4 } from 'uuid';
 
 @Entity({ tableName: 'subscriptions' })
-@Unique({ properties: ['email', 'elistId'] })
-export class SubscriptionEntity implements ISubscription {
+@Unique({ properties: ['email', 'elist'] })
+export class SubscriptionEntity implements Omit<ISubscription, 'elistId'> {
   @PrimaryKey({ type: UuidType, autoincrement: false })
-  public id!: string;
+  public id: string = v4();
 
   @Property({ fieldName: 'first_name', length: 100 })
   public firstName?: string;
@@ -41,12 +44,32 @@ export class SubscriptionEntity implements ISubscription {
 
   @ManyToOne({
     entity: () => ElistEntity,
+    ref: true,
     fieldName: 'elist_id',
-    type: UuidType,
+    // wrappedReference: true,
   })
-  public elistId!: string;
+  public elist: Ref<ElistEntity>;
 
-  constructor(sub: ISubscription) {
+  constructor(sub: Partial<ISubscription>) {
+    const elistId = sub.elistId;
+
+    if (elistId) {
+      delete sub.elistId;
+      this.elist = ref(ElistEntity, elistId);
+    }
+
     Object.assign(this, sub);
+  }
+
+  toJSON(...args: any[]): Record<string, any> {
+    const obj: Partial<ISubscription> & { elist?: ElistEntity } = {};
+    Object.assign(obj, this);
+
+    if (!this.elist?.isInitialized()) {
+      obj.elistId = this.elist.id;
+      delete obj.elist;
+    }
+
+    return obj;
   }
 }

@@ -8,12 +8,15 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { UserService } from '@azure-function-api-mysql/db';
+import { ElistService, UserService } from '@azure-function-api-mysql/db';
 import { IUser } from '@azure-function-api-mysql/interfaces';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly elistService: ElistService
+  ) {}
 
   @Get()
   public async index() {
@@ -70,6 +73,16 @@ export class UserController {
     } catch (e) {
       console.error(e);
       throw new BadRequestException();
+    }
+  }
+
+  @Get('/:id/elists')
+  public async getElists(@Param('id') userId: string) {
+    try {
+      return await this.elistService.findByOwnerId(userId);
+    } catch (e) {
+      console.error(e);
+      throw new BadRequestException(e);
     }
   }
 }

@@ -1,4 +1,4 @@
-import { MikroORM, wrap } from '@mikro-orm/core';
+import { LoadStrategy, MikroORM, wrap } from '@mikro-orm/core';
 import { EntityRepository, SqlEntityManager } from '@mikro-orm/mysql';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@mikro-orm/nestjs';
@@ -18,20 +18,25 @@ export class ElistService {
     private readonly er: EntityRepository<ElistEntity>
   ) {}
 
-  public async findAll(): Promise<IElistWithOwnerInfoDTO[]> {
+  public async findAll(): Promise<ElistEntity[]> {
     return await this.er.findAll({
       populate: ['owner'],
-      fields: ['*', 'owner.id', 'owner.firstName', 'owner.lastName'],
+      fields: ['*', { owner: ['id', 'firstName', 'lastName'] }],
+      // strategy: LoadStrategy.JOINED,
     });
   }
 
   public async findOne(uuid: string) {
-    return await this.er.findOne(uuid);
+    return await this.er.findOne(uuid, {
+      populate: ['owner'],
+      fields: ['*', { owner: ['id', 'firstName', 'lastName'] }],
+    });
   }
 
   public async createOne(anElist: Omit<IElist, 'id'>) {
-    const entity = new ElistEntity(anElist);
+    const entity = this.er.create(new ElistEntity(anElist));
     await this.er.persistAndFlush(entity);
+    return entity;
   }
 
   /** TODO: this is not a replace as it should be
@@ -47,5 +52,9 @@ export class ElistService {
   public async deleteOne(uuid: string) {
     const ref = this.er.getReference(uuid);
     await this.er.removeAndFlush(ref);
+  }
+
+  public async findByOwnerId(id: string): Promise<ElistEntity[]> {
+    return await this.er.find({ owner: { id } });
   }
 }

@@ -9,10 +9,12 @@ import {
   SubscriptionEntity,
   UserService,
   ElistService,
+  SubscriptionService,
 } from '@azure-function-api-mysql/db';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { ElistController } from './controllers/elist.controller';
 import { PopulateHint } from '@mikro-orm/core';
+import { SubscriptionController } from './controllers/subscription.controller';
 
 @Module({
   imports: [
@@ -27,7 +29,12 @@ import { PopulateHint } from '@mikro-orm/core';
     }),
     MikroOrmModule.forFeature([UserEntity, SubscriptionEntity, ElistEntity]),
   ],
-  providers: [AppService, UserService, ElistService],
-  controllers: [AppController, UserController, ElistController],
+  providers: [AppService, UserService, ElistService, SubscriptionService],
+  controllers: [
+    AppController,
+    UserController,
+    ElistController,
+    SubscriptionController,
+  ],
 })
 export class AppModule {}

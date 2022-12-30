@@ -9,14 +9,18 @@ import {
   Put,
 } from '@nestjs/common';
 import { ElistService, UserService } from '@azure-function-api-mysql/db';
-import { IElist, IUser } from '@azure-function-api-mysql/interfaces';
+import {
+  IElist,
+  IElistWithOwnerInfoDTO,
+  IUser,
+} from '@azure-function-api-mysql/interfaces';
 
 @Controller('elists')
 export class ElistController {
   constructor(private readonly elistService: ElistService) {}
 
   @Get()
-  public async index() {
+  public async index(): Promise<IElistWithOwnerInfoDTO[]> {
     try {
       return await this.elistService.findAll();
     } catch (e) {
@@ -39,7 +43,7 @@ export class ElistController {
   public async create(@Body() body: Omit<IElist, 'id'>) {
     console.log('body:', body);
     try {
-      await this.elistService.createOne(body);
+      return await this.elistService.createOne(body);
     } catch (e) {
       console.error(e);
       throw new BadRequestException();

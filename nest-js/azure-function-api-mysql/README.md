@@ -41,5 +41,14 @@ questions
 pitfalls
 
 1. typing for toObject is messed up
+2. CORS errors cannot be caught:
 
-## Nest.js Things
+```bash
+Access to XMLHttpRequest at 'http://localhost:3333/api/users' from origin 'http://localhost:4200' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
+GET http://localhost:3333/api/users net::ERR_FAILED 200
+```
+
+Just add handling
+
+## Nest.js x Auth

@@ -14,6 +14,7 @@ export class UuidType extends Type<string, Buffer> {
   ): Buffer {
     try {
       const bin = Buffer.from(parse(value) as Uint8Array);
+      // console.log('bin:', bin);
       return bin;
     } catch (e) {
       throw ValidationError.invalidType(UuidType, value, 'JS');
@@ -27,10 +28,14 @@ export class UuidType extends Type<string, Buffer> {
     try {
       let st;
       if (value instanceof Buffer) {
+        // console.log(1);
         st = stringify(value);
       } else {
-        st = stringify(Buffer.from(value));
+        // Reference.createFromPK goes through here
+        // console.log(2);
+        st = value;
       }
+      // console.log('st:', st);
       return st;
     } catch (e) {
       throw ValidationError.invalidType(UuidType, value, 'database');

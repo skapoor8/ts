@@ -6,16 +6,36 @@
   "targets": {
     "build": {
       "executor": "@nrwl/node:webpack",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/api",
         "main": "apps/api/src/main.ts",
         "tsConfig": "apps/api/tsconfig.app.json",
-        "assets": [
-          "apps/api/src/assets"
-        ]
+        "assets": ["apps/api/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/api/src/environments/environment.ts",
+              "with": "apps/api/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "build-func": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/api",
+        "main": "apps/api/index.ts",
+        "tsConfig": "apps/api/tsconfig.app.json",
+        "webpackConfigPath": "apps/api/webpack.config.js",
+        "assets": ["apps/api/src/assets"]
       },
       "configurations": {
         "production": {
@@ -42,22 +62,22 @@
         }
       }
     },
+    "serve-func": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "func host start --prefix apps/api"
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/api/**/*.ts"
-        ]
+        "lintFilePatterns": ["apps/api/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/apps/api"
-      ],
+      "outputs": ["coverage/apps/api"],
       "options": {
         "jestConfig": "apps/api/jest.config.ts",
         "passWithNoTests": true

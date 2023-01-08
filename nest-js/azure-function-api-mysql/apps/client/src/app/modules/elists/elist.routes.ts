@@ -26,4 +26,8 @@ export const routes: Route[] = [
     path: ':id',
     component: ElistDetailComponent,
   },
+  {
+    path: ':id/edit',
+    component: ElistsFormComponent,
+  },
 ];

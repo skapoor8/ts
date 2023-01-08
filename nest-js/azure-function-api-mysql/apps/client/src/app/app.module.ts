@@ -11,6 +11,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APIInterceptor } from './shared/interceptors/api.interceptor';
 import { ShellModule } from './modules/shell/shell.module';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { ClassValidatorFormBuilderModule } from 'ngx-reactive-form-class-validator';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +24,7 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
       level: NgxLoggerLevel.DEBUG,
       enableSourceMaps: true,
     }),
+    ClassValidatorFormBuilderModule.forRoot(),
     // features
     ShellModule,
     // ui

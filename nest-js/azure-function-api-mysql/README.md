@@ -9,7 +9,7 @@
 
 questions
 
-1. why do libs need package.json
+1. why do libs need package.json -> for local config? local scripts?
 2. running scripts in packages from the project toplevel - rn running by going to project
 3. issues when changing directory structure - expected path libs or something - issues was not running nx command line from project root
 4. shared nodemodules vs separate by lib
@@ -49,6 +49,34 @@ Access to XMLHttpRequest at 'http://localhost:3333/api/users' from origin 'http:
 GET http://localhost:3333/api/users net::ERR_FAILED 200
 ```
 
-Just add handling
+## Adding Azure Function
 
-## Nest.js x Auth
+1. install @nestjs/azure-func-http
+2. run the nest add command for the package via nx g: `npx nx g @nestjs/azure-func-http:nest-add --sourceRoot "apps/api/src" --rootDir "apps/api" --project "apps/api"` (adjustments are required since this doesn't work well for nx integrated repos)
+3. move all generated files into the api directory
+4. move function.json file into api/src
+5. Alter base function route in the main.azure.ts file, in the route in function.json and also add the following to host.json:
+
+```json
+{
+  "version": "2.0",
+  "extensions": {
+    "http": {
+      "routePrefix": ""
+    }
+  }
+}
+```
+
+6. Add tasks for building and serving...
+
+NOTE: will compile with webpack, not separate js files like the basic nest js azure setup
+
+### Pitfalls
+
+1. Running nest cli via nx: find nx capabilities for a package (source)[https://github.com/nrwl/nx/issues/3779]
+2. Adding nest js cli if not enabled already: https://github.com/nrwl/nx/issues/4135
+
+## Generating an angular project
+
+Learning: material, setting up with nx, api base routes... ssr is a no go...

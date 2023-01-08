@@ -90,6 +90,10 @@ export class UsersDomainService {
     const found = users?.data?.find((u) => u === user);
     if (users?.data?.length > 0 && found) {
       this._dataStore.setUser(DomainServiceUtils.createCompleteLoadable(found));
+      this._logger.debug(
+        'domain-services.users.selectUser: user selected =',
+        found
+      );
     } else {
       this._dataStore.setUser(
         DomainServiceUtils.createEmptyLoadable(

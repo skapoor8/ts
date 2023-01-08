@@ -23,9 +23,6 @@
     "ts-node": "^10.9.1"
   },
   "mikro-orm": {
-    "useTsNode": true,
-    "configPaths": [
-      "./src/mirko-orm.confit.ts"
-    ]
+    "useTsNode": true
   }
 }

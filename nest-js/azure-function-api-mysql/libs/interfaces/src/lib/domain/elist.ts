@@ -5,3 +5,5 @@ export interface IElist {
   defaultSettings?: object;
   ownerId: string;
 }
+
+export type IElistNew = Omit<IElist, 'id'>;

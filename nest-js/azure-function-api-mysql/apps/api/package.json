@@ -1,0 +1,10 @@
+{
+  "name": "@azure-function-api-mysql/db",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node dist/main",
+    "start:prod": "node dist/main"
+  },
+  "dependencies": {}
+}

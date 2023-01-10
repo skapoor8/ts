@@ -4,7 +4,8 @@ module.exports = function (options) {
     entry: __dirname + '/index.ts',
     output: {
       libraryTarget: 'commonjs2',
-      filename: 'apps/api/index.js'
-    }
+      filename: 'apps/api/index.js',
+    },
+    exports: ['./src/function.json'],
   };
 };

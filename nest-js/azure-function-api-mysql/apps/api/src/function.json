@@ -13,5 +13,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../../../dist/apps/api/main.js"
+  "scriptFile": "../dist/main.js"
 }

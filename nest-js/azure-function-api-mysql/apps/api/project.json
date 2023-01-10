@@ -35,6 +35,30 @@
         "main": "apps/api/index.ts",
         "tsConfig": "apps/api/tsconfig.app.json",
         "webpackConfigPath": "apps/api/webpack.config.js",
+        "assets": ["apps/api/src/assets", "apps/api/src/function.json"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/api/src/environments/environment.ts",
+              "with": "apps/api/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "build-func-2": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "apps/api/dist",
+        "main": "apps/api/index.ts",
+        "tsConfig": "apps/api/tsconfig.app.json",
+        "webpackConfigPath": "apps/api/webpack.config.js",
         "assets": ["apps/api/src/assets"]
       },
       "configurations": {
@@ -63,6 +87,12 @@
       }
     },
     "serve-func": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "func host start --prefix dist/apps/api"
+      }
+    },
+    "serve-func-2": {
       "executor": "nx:run-commands",
       "options": {
         "command": "func host start --prefix apps/api"

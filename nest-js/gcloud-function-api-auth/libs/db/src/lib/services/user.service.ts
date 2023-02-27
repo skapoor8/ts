@@ -22,6 +22,10 @@ export class UserService {
     return await this.er.findOne(uuid);
   }
 
+  public async findOneByUid(uid: string) {
+    return await this.er.findOne({ uid });
+  }
+
   public async createOne(aUser: Omit<IUser, 'id'>) {
     const entity = this.er.create(new UserEntity(aUser));
     await this.er.persistAndFlush(entity);

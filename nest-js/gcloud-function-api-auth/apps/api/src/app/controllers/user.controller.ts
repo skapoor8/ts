@@ -9,7 +9,9 @@ import {
   Put,
 } from '@nestjs/common';
 import { ElistService, UserService } from '@gcloud-function-api-auth/db';
-import { IUser } from '@gcloud-function-api-auth/interfaces';
+import { IUser, UserRole } from '@gcloud-function-api-auth/interfaces';
+import { Public } from '../decorators/public.decorator';
+import { Role } from '../decorators/role.decorator';
 
 @Controller('users')
 export class UserController {
@@ -18,13 +20,14 @@ export class UserController {
     private readonly elistService: ElistService
   ) {}
 
+  @Role(UserRole.ADMIN)
   @Get()
   public async index() {
     try {
       return await this.userService.findAll();
     } catch (e) {
       console.error(e);
-      throw new BadRequestException();
+      throw new BadRequestException(e);
     }
   }
 
@@ -34,10 +37,21 @@ export class UserController {
       return await this.userService.findOne(id);
     } catch (e) {
       console.error(e);
-      throw new BadRequestException();
+      throw new BadRequestException(e);
     }
   }
 
+  @Get('/uid/:id')
+  public async readByUid(@Param('id') id) {
+    try {
+      return await this.userService.findOneByUid(id);
+    } catch (e) {
+      console.error(e);
+      throw new BadRequestException(e);
+    }
+  }
+
+  @Role(UserRole.ADMIN)
   @Post()
   public async create(@Body() body: Omit<IUser, 'id'>) {
     console.log('body:', body);
@@ -45,7 +59,7 @@ export class UserController {
       await this.userService.createOne(body);
     } catch (e) {
       console.error(e);
-      throw new BadRequestException();
+      throw new BadRequestException(e);
     }
   }
 
@@ -62,7 +76,7 @@ export class UserController {
       return updated;
     } catch (e) {
       console.error(e);
-      throw new BadRequestException();
+      throw new BadRequestException(e);
     }
   }
 
@@ -72,7 +86,7 @@ export class UserController {
       await this.userService.deleteOne(id);
     } catch (e) {
       console.error(e);
-      throw new BadRequestException();
+      throw new BadRequestException(e);
     }
   }
 

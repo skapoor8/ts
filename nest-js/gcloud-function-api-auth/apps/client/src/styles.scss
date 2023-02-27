@@ -5,6 +5,9 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+/* firebase ui */
+@import '~firebaseui/dist/firebaseui.css';
+
 html,
 body {
   height: 100%;

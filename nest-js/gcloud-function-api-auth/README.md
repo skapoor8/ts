@@ -98,7 +98,16 @@ Learning: material, setting up with nx, api base routes... ssr is a no go...
 6. while deploying google cloud function api, use the --vps-connector flag with the name of the connector you just set up. This will give your function app access to the cloud sql instance. This is an alternative to the zip based deployment shown in the official guide.
 7. In your mysql config, let the host be the private IP listed in the cloud sql instance's overview
 
+#### Connecting Locally for Scripting
+
+1. Add your ip as an allowed address
+2. Then just use the public ip to login with any mysql host
+
 Source: https://cloud.google.com/sql/docs/mysql/connect-instance-cloud-functions
+
+#### Pitfalls
+
+You can use a socket at the function endpoint to communicate via public ip, without having to set up private ip. Didn't seem to work out with mikro orm config, might have been okay with just the mysql2 npm package.
 
 ### Deploying Nest.js
 
@@ -215,3 +224,15 @@ Pitfalls:
 ```
 
 6. Run the auto-generated deploy script to deploy: `npx nx run client:deploy`
+
+### Firebase Auth
+
+#### Setting up AngularFire
+
+#### Using prebuilt auth UI
+
+https://github.com/RaphaelJenni/FirebaseUI-Angular
+
+#### User Roles and Permissions
+
+##### Auhtenticating Functions w/ API Keys

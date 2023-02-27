@@ -7,5 +7,7 @@
     "start:prod": "node dist/main",
     "start:azure": "func host start"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.1.3"
+  }
 }

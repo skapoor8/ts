@@ -14,6 +14,8 @@ import { ShellModule } from './modules/shell/shell.module';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { ClassValidatorFormBuilderModule } from 'ngx-reactive-form-class-validator';
 import { environment } from '../environments/environment';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { firebase, firebaseui, FirebaseUIModule } from 'firebaseui-angular';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,6 +30,11 @@ import { environment } from '../environments/environment';
     }),
     ClassValidatorFormBuilderModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    FirebaseUIModule.forRoot({
+      signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
+      credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
+    }),
     // features
     ShellModule,
     // ui

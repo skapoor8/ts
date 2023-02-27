@@ -1,4 +1,12 @@
-import { Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core';
+import { UserRole } from '@gcloud-function-api-auth/interfaces';
+import {
+  Entity,
+  Enum,
+  Index,
+  PrimaryKey,
+  Property,
+  Unique,
+} from '@mikro-orm/core';
 import { IUser } from '@gcloud-function-api-auth/interfaces';
 import { UuidType } from '../custom-types';
 import { v4 } from 'uuid';
@@ -7,6 +15,11 @@ import { v4 } from 'uuid';
 export class UserEntity implements IUser {
   @PrimaryKey({ type: UuidType, autoincrement: false })
   public id: string = v4(); // auto-generate uuid
+
+  @Property()
+  @Unique()
+  @Index()
+  public uid: string;
 
   @Property({ fieldName: 'first_name', length: 100, nullable: true })
   public firstName?: string;
@@ -25,7 +38,12 @@ export class UserEntity implements IUser {
   @Index()
   public email: string;
 
+  @Enum(() => UserRole)
+  public role: UserRole = UserRole.USER;
+
   constructor(user: Partial<IUser>) {
     Object.assign(this, user);
   }
+
+  // static --------------------------------------------------------------------
 }

@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -16,6 +21,10 @@ import { ElistController } from './controllers/elist.controller';
 import { PopulateHint } from '@mikro-orm/core';
 import { SubscriptionController } from './controllers/subscription.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthService } from './services/auth.service';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './guards/auth.guard';
+import { AuthMiddleware } from './middleware/auth.middleware';
 
 @Module({
   imports: [
@@ -46,7 +55,17 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     MikroOrmModule.forFeature([UserEntity, SubscriptionEntity, ElistEntity]),
   ],
-  providers: [AppService, UserService, ElistService, SubscriptionService],
+  providers: [
+    AppService,
+    UserService,
+    ElistService,
+    SubscriptionService,
+    AuthService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
   controllers: [
     AppController,
     UserController,
@@ -54,4 +73,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     SubscriptionController,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
+  }
+}

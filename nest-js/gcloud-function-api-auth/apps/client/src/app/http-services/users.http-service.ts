@@ -10,6 +10,14 @@ import {
 export class UsersHttpService {
   constructor(private _http: HttpClient) {}
 
+  public getUserByUid(uid: string) {
+    return this._http.get<IUser>(`users/uid/${uid}`);
+  }
+
+  public getUserById(id: string) {
+    return this._http.get<IUser>(`users/${id}`);
+  }
+
   public getUsers() {
     return this._http.get<IUser[]>('users');
   }
